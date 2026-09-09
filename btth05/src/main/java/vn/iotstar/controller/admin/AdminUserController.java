@@ -19,10 +19,10 @@ public class AdminUserController {
     public String list(Model model, @RequestParam(name="keyword", required=false) String keyword) {
         List<User> users;
         if(keyword != null && !keyword.isEmpty()) {
-            users = userRepository.findByUsernameContainingIgnoreCaseOrFullNameContainingIgnoreCase(keyword, keyword);
+            users = userRepository.searchActiveUsers(keyword);
             model.addAttribute("keyword", keyword);
         } else {
-            users = userRepository.findAll();
+            users = userRepository.findActiveUsers();
         }
         model.addAttribute("users", users);
         return "admin/user/list";
@@ -36,6 +36,9 @@ public class AdminUserController {
 
     @PostMapping("/save")
     public String save(@ModelAttribute("user") User user) {
+        if(user.getIsDeleted() == null) {
+            user.setIsDeleted(false);
+        }
         userRepository.save(user);
         return "redirect:/admin/users";
     }
@@ -52,7 +55,27 @@ public class AdminUserController {
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable("id") Long id) {
-        userRepository.deleteById(id);
+        User user = userRepository.findById(id).orElse(null);
+        if(user != null) {
+            user.setIsDeleted(true);
+            userRepository.save(user);
+        }
         return "redirect:/admin/users";
+    }
+
+    @GetMapping("/trash")
+    public String trash(Model model) {
+        model.addAttribute("users", userRepository.findDeletedUsers());
+        return "admin/user/trash";
+    }
+
+    @GetMapping("/restore/{id}")
+    public String restore(@PathVariable("id") Long id) {
+        User user = userRepository.findById(id).orElse(null);
+        if(user != null) {
+            user.setIsDeleted(false);
+            userRepository.save(user);
+        }
+        return "redirect:/admin/users/trash";
     }
 }

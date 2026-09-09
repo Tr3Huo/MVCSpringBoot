@@ -34,7 +34,7 @@
                     <td>${cat.description}</td>
                     <td>
                         <a href="/admin/categories/edit/${cat.id}" class="btn btn-sm btn-warning">Sửa</a>
-                        <a href="/admin/categories/delete/${cat.id}" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa không?')">Xóa</a>
+                        <a href="/admin/categories/delete/${cat.id}" class="btn btn-sm btn-danger" onclick="confirmDelete(event, this.href)">Xóa</a>
                     </td>
                 </tr>
             </c:forEach>
@@ -45,5 +45,26 @@
     </table>
     <br/>
     <a href="/admin/users" class="btn btn-outline-info">Chuyển sang Quản lý Người dùng</a>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmDelete(event, url) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Xác nhận xóa?',
+                text: "Bạn có chắc chắn muốn xóa danh mục này không?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Có, Xóa nó!',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = url;
+                }
+            })
+        }
+    </script>
 </body>
 </html>

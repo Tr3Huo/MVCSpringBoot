@@ -1,15 +1,16 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>${user.id == null ? 'Thêm' : 'Cập nhật'} Người dùng</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="container mt-4">
     <h2>${user.id == null ? 'Thêm Người dùng mới' : 'Cập nhật Người dùng'}</h2>
     <div class="card p-4 mt-3">
-        <form action="/admin/users/save" method="post">
+        <form action="/admin/users/save" method="post" accept-charset="UTF-8">
             <input type="hidden" name="id" value="${user.id}">
             <div class="mb-3">
                 <label class="form-label">Tên đăng nhập</label>

@@ -11,8 +11,12 @@ public class User {
     
     private String username;
     private String password;
+    @Column(columnDefinition = "nvarchar(255)")
     private String fullName;
     private String role;
+    
+    @Column(name = "is_deleted", columnDefinition = "bit default 0")
+    private Boolean isDeleted = false;
 
     public User() {}
 
@@ -26,4 +30,6 @@ public class User {
     public void setFullName(String fullName) { this.fullName = fullName; }
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
+    public Boolean getIsDeleted() { return isDeleted; }
+    public void setIsDeleted(Boolean isDeleted) { this.isDeleted = isDeleted; }
 }

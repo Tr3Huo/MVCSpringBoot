@@ -3,21 +3,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Quản lý Người dùng</title>
+    <title>Thùng rác - Người dùng</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="container mt-4">
-    <h2>Quản lý Người dùng (Admin)</h2>
-    <div class="d-flex justify-content-between mb-3">
-        <div>
-            <a href="/admin/users/add" class="btn btn-success">Thêm Người dùng mới</a>
-            <a href="/admin/users/trash" class="btn btn-warning ms-2">Thùng rác</a>
-        </div>
-        <form action="/admin/users" method="get" class="d-flex">
-            <input type="text" name="keyword" class="form-control me-2" placeholder="Tìm kiếm người dùng..." value="${keyword}">
-            <button type="submit" class="btn btn-primary text-nowrap">Tìm kiếm</button>
-            <a href="/admin/users" class="btn btn-secondary ms-2 text-nowrap">Làm mới</a>
-        </form>
+    <h2>Thùng rác - Người dùng đã xóa</h2>
+    <div class="mb-3">
+        <a href="/admin/users" class="btn btn-secondary">Quay lại danh sách</a>
     </div>
 
     <table class="table table-bordered table-striped">
@@ -38,31 +30,28 @@
                     <td>${usr.fullName}</td>
                     <td><span class="badge bg-${usr.role == 'ADMIN' ? 'danger' : 'info'}">${usr.role}</span></td>
                     <td>
-                        <a href="/admin/users/edit/${usr.id}" class="btn btn-sm btn-warning">Sửa</a>
-                        <a href="/admin/users/delete/${usr.id}" class="btn btn-sm btn-danger" onclick="confirmDelete(event, this.href)">Xóa</a>
+                        <a href="/admin/users/restore/${usr.id}" class="btn btn-sm btn-success" onclick="confirmRestore(event, this.href)">Khôi phục</a>
                     </td>
                 </tr>
             </c:forEach>
             <c:if test="${empty users}">
-                <tr><td colspan="5" class="text-center">Không tìm thấy người dùng nào.</td></tr>
+                <tr><td colspan="5" class="text-center">Thùng rác rỗng.</td></tr>
             </c:if>
         </tbody>
     </table>
-    <br/>
-    <a href="/admin/categories" class="btn btn-outline-info">Chuyển sang Quản lý Danh mục</a>
-
+    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        function confirmDelete(event, url) {
+        function confirmRestore(event, url) {
             event.preventDefault(); 
             Swal.fire({
-                title: 'Xác nhận đưa vào thùng rác?',
-                text: "Người dùng này sẽ được chuyển vào thùng rác!",
-                icon: 'warning',
+                title: 'Xác nhận khôi phục?',
+                text: "Người dùng này sẽ được khôi phục về danh sách chính!",
+                icon: 'question',
                 showCancelButton: true,
-                confirmButtonColor: '#dc3545',
+                confirmButtonColor: '#198754',
                 cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Có, Xóa nó!',
+                confirmButtonText: 'Đồng ý',
                 cancelButtonText: 'Hủy'
             }).then((result) => {
                 if (result.isConfirmed) {
